@@ -61,7 +61,7 @@ app.post('/upload', function (request, response) {
         return response.status(400).send('No files were uploaded.');
     }
     var newFile = request.files.file;
-    newFile.mv('./upload/' + , function(err) {
+    newFile.mv('./upload/' + newFile.name, function(err) {
         if (err)
             return res.status(500).send(err);
         res.send('File uploaded!');
