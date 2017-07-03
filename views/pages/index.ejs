@@ -2,15 +2,52 @@
 <html>
 <head>
   <title>test page</title>
+    <!--<meta name="google-signin-scope" content="profile email">-->
+    <!--<meta name="google-signin-client_id" content="999279785788-p30fuj9scbca5aaoita0387c53tjkrlr.apps.googleusercontent.com">-->
+    <!--<script src="https://apis.google.com/js/platform.js" async defer></script>-->
 </head>
 
 <body>
+<script>
+    window.fbAsyncInit = function() {
+        FB.init({
+            appId      : '1243279955781066',
+            xfbml      : true,
+            version    : 'v2.9'
+        });
+        FB.AppEvents.logPageView();
+        FB.getLoginStatus(function(response) {
+            alert(response);
+        });
+    };
+
+    (function(d, s, id){
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {return;}
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+</script>
+
+<h1>login</h1>
   <form method="post" action="/gooduser">
       Username:<input name="username" type="text"><br />
       Password:<input name="password" type="password"><br />
       <button type="submit">Login</button>
   </form>
-  <br /><br/>
+    <br /><br/>
+<!--<div class="fb-login-button" data-max-rows="1" data-size="large" data-button-type="login_with" data-show-faces="false" data-auto-logout-link="false"></div>-->
+<div
+        class="fb-like"
+        data-share="true"
+        data-width="450"
+        data-show-faces="true">
+</div>
+<br />
+<!--<div class="g-signin2" data-onsuccess="onSignIn"></div>-->
+    <br /><br/>
+<h1>new user</h1>
   <form method="post" action="/newuser">
       Name:<input name="names" type="text"><br />
       Username:<input name="username" type="text"><br />
@@ -19,8 +56,10 @@
       <button type="submit">add user</button>
   </form>
   <br /><br/>
+<h1>upload photo</h1>
     <form method="post" action="/upload" encType="multipart/form-data">
-        <input type="file" name="file" />
+        Picture:<input type="file" name="file" /><br />
+        Description:<input type="text" name="dec"><br />
         <button type="submit">upload</button>
     </form>
 </body>
