@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>test page</title>
+    <meta name="google-signin-scope" content="profile email">
+    <meta name="google-signin-client_id" content="999279785788-p30fuj9scbca5aaoita0387c53tjkrlr.apps.googleusercontent.com">
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <link rel="stylesheet" href="/stylesheets/main.css">
+    <script src="/js/functions.js"></script>
+    <script
+            src="https://code.jquery.com/jquery-3.2.1.min.js"
+            integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+            crossorigin="anonymous">
+    </script>
+</head>
+
+<body>
+<script>
+    window.fbAsyncInit = function() {
+        FB.init({
+            appId      : '1243279955781066',
+            xfbml      : true,
+            version    : 'v2.9'
+        });
+
+        FB.getLoginStatus(function(response) {
+            if (response.status === 'connected') {
+                goodFBuser();
+                console.log("facebook login");
+            }
+        });
+
+        FB.AppEvents.logPageView();
+
+        FB.Event.subscribe('auth.statusChange', function(response) {
+            if (response.status === 'connected') {
+                goodFBuser();
+                console.log("login worked");
+            }
+        });
+
+    };
+</script>
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.9";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));</script>
+
+<div id="login_win">
+<h1>Log in to continue</h1>
+    <form action="">
+        <input type="text" id="username" placeholder="Username"><br />
+        <input type="password" id="password" placeholder="Password"><br />
+        <button type="submit" onclick="login()">Log in</button><br />
+    </form>
+    <h5>OR</h5>
+    <div style="padding-left: 80px;" class="fb-login-button" data-width="200" data-max-rows="1" data-size="large" data-button-type="login_with" data-show-faces="false" data-auto-logout-link="false" data-use-continue-as="false"></div>
+    <br /><br />
+        <div id="my-signin2" style="padding-left: 80px;"></div>
+    <script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
+</div>
+
+</body>
+</html>

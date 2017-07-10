@@ -1,27 +1,54 @@
-.jumbotron {
-  background: #532F8C;
-  color: white;
-  padding-bottom: 80px; }
-  .jumbotron .btn-primary {
-    background: #845ac7;
-    border-color: #845ac7; }
-    .jumbotron .btn-primary:hover {
-      background: #7646c1; }
-  .jumbotron p {
-    color: #d9ccee;
-    max-width: 75%;
-    margin: 1em auto 2em; }
-  .navbar + .jumbotron {
-    margin-top: -20px; }
-  .jumbotron .lang-logo {
-    display: block;
-    background: #B01302;
-    border-radius: 50%;
-    overflow: hidden;
-    width: 100px;
-    height: 100px;
-    margin: auto;
-    border: 2px solid white; }
-    .jumbotron .lang-logo img {
-      max-width: 100%; }
+#login_win {
+    width: 400px;
+    height: 533px;
+    background-color: #ffffff;
+    position:absolute; /*it can be fixed too*/
+    left:0; right:0;
+    top:0; bottom:0;
+    margin:auto;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px #000000;
+}
 
+body {
+    background-color: #efefef;
+}
+
+input {
+    width: 240px;
+    height: 40px;
+    /*padding: 12px 20px;*/
+    margin: 8px 0;
+    box-sizing: border-box;
+    border-radius: 4px;
+    margin-left: 80px;
+}
+
+button {
+    background-color: #bd081c; /* Green */
+    border: none;
+    color: white;
+    /*padding: 15px 32px;*/
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    text-align: center;
+    border-radius: 4px;
+    margin-left: 80px;
+    width: 240px;
+    height: 40px;
+}
+
+#main {
+    height: 56px;
+    width: 100vw;
+    background-color: aqua;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}
