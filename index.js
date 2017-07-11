@@ -179,6 +179,19 @@ app.post('/upload', function (request, response) {
     });
 });
 
+app.post('/imgDec', logedon, function (request, response) {
+    var id = request.body.id;
+    db.one('SELECT * FROM photo WHERE id = $1', [id])
+        .then(function (data) {
+            response.json({
+                success: true,
+                data
+            });
+        }).catch(function (err) {
+        console.log(err);
+    });
+});
+
 app.post('/img', logedon, function (request, response) {
     var id = -1;
     if (request.session.user == "g") {

@@ -1,4 +1,4 @@
-#login_win {
+#login_win, #menu{
     width: 400px;
     height: 533px;
     background-color: #ffffff;
@@ -24,8 +24,8 @@ input {
     margin-left: 80px;
 }
 
-button {
-    background-color: #bd081c; /* Green */
+#login {
+    background-color: #bd081c;
     border: none;
     color: white;
     /*padding: 15px 32px;*/
@@ -33,7 +33,6 @@ button {
     text-decoration: none;
     display: inline-block;
     font-size: 16px;
-    text-align: center;
     border-radius: 4px;
     margin-left: 80px;
     width: 240px;
@@ -41,14 +40,91 @@ button {
 }
 
 #main {
-    height: 56px;
+    height: 101px;
     width: 100vw;
-    background-color: aqua;
-    margin: 0;
-    padding: 0;
+    margin-bottom: 5px;
+    border-bottom: solid 2px rgba(0, 0, 0, 0.1);
+    /*padding: 0px 50px;*/
+}
+
+.img {
+    margin: 5px;
 }
 
 body {
     margin: 0;
     padding: 0;
+}
+
+#logo {
+    width: 100px;
+    height: 100px;
+    padding-left: 50px;
+    float: left;
+}
+
+#but {
+    float: right;
+    padding-right: 50px;
+    padding-top:30px;
+}
+
+#logout, #upload, #edit, #del {
+    border: none;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 4px;
+    width: 150px;
+    height: 40px;
+}
+
+#upload {
+    background-color: #bd081c;
+    color: white;
+    margin-right: 5px;
+}
+
+#menu {
+    width: 560px;
+    height: 650px;
+    z-index: 5;
+
+}
+
+.upload, .pic {
+    visibility: hidden;
+}
+
+#edit, #del {
+    margin: 5px;
+}
+
+.pic {
+    text-align: center;
+}
+
+.imgMenu {
+    margin-left: 5px;
+}
+
+#name {
+    height: 25px;
+    margin: 0;
+    text-align: center;
+    padding-top: 5px;
+    font-size: 15px;
+}
+
+/*close button */
+
+.close {
+    color: #777;
+    font: 25px/100% arial, sans-serif;
+    position: absolute;
+    right: 5px;
+    text-decoration: none;
+    text-shadow: 0 1px 0 #fff;
+    top: 5px;
 }

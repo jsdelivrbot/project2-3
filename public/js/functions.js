@@ -108,7 +108,7 @@ function getImg() {
         if (result) {
             console.log(result);
             $.each(result.data, function (index, value) {
-                $('#img').append("<img id='" + index + "' onload='resize(" + index + ")' src='/upload/" + value.url + "'>");
+                $('#img').append("<a onclick='imgMenu(" + value.id + ")'><img class='img' id='" + value.id + "' onload='resize(" + value.id + ", 400, 400)' src='/upload/" + value.url + "'></a>");
             });
         } else {
             $("#status").text("Error logging in.");
@@ -117,15 +117,34 @@ function getImg() {
     });
 }
 
-function resize(id) {
-    console.log("resize");
-        var maxWidth = 400; // Max width for the image
-        var maxHeight = 400;    // Max height for the image
+function imgMenu(id) {
+    var params = {
+        id: id
+    }
+    $.post("/imgDec", params, function(result) {
+        if (result && result.success) {
+            var re = {
+                names: result.data[0].photoname,
+                dec: result.data[0].dec
+            };
+            var img = 400;
+            $('.pic').css("visibility", "visible");
+            $('.pic').append("<div id='name'>" + re.names + "</div>");
+            $('.pic').append("<a href='#' class='close' onclick='close()'>X</a>");
+            $('.pic').append("<img class='imgMenu' id='" + img + "' onload='resize(" + img + ", 550, 550)' src='" + $("#" + id).attr('src') + "'>");
+            $('.pic').append("<div id='dec'>" + re.dec + "</div>");
+            $('.pic').append('<button id="edit" type="button">Edit</button>');
+            $('.pic').append('<button id="del" type="button">Delete</button>');
+        } else {
+            $("#status").text("Error logging in.");
+        }
+    });
+}
+
+function resize(id, maxWidth, maxHeight) {
         var ratio = 0;  // Used for aspect ratio
         var width = $("#" + id).width();    // Current image width
-        console.log(width);
         var height = $("#" + id).height();  // Current image height
-        console.log(height);
 
         // Check if the current width is larger than the max
         if (width > maxWidth) {
@@ -144,3 +163,14 @@ function resize(id) {
             width = width * ratio;    // Reset width to match scaled image
         }
 };
+
+function close() {
+    console.log("hello world");
+    $('.pic').css("visibility", "hidden");
+    $('.upload').css("visibility", "hidden");
+}
+
+function logout() {
+
+}
+
