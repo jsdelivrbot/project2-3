@@ -36,7 +36,6 @@ app.get('/', logedon, function(request, response) {
 });
 
 app.get('/login', function(request, response) {
-    console.log(request.session);
     response.render('pages/login');
 });
 
@@ -48,10 +47,9 @@ app.get('/exs', function(request, response) {
 app.post('/gooduser', function (request, response) {
     var username = request.body.username;
     var password = request.body.password;
-    console.log(username + ' ' + password);
     db.one('SELECT password FROM users WHERE username = $1', [username])
         .then(function (data) {
-
+            console.log(data);
             var hashedpassword = data.password;
             bcrypt.compare(password, hashedpassword, function (err, res) {
                if (res) {
@@ -127,12 +125,13 @@ app.post('/newGuser', function (request, response) {
 
 app.post('/goodFBuser', function (request, response) {
     fbid = request.body.fbid;
+    console.log(fbid);
     db.one('SELECT * FROM users WHERE fid = $1', [fbid])
         .then(function (data) {
             if (data.fid) {
                 response.send({success : true});
                 request.session.user = 'FB';
-                request.session.fb = fid;
+                request.session.fb = fbid;
                 request.session.save();
             } else {
                 response.send({success : false});
@@ -165,7 +164,9 @@ app.post('/upload', function (request, response) {
         return response.status(400).send('No files were uploaded.');
     }
     var newFile = request.files.file;
-    db.none('INSERT INTO photo(url, dec, owner_id, shared) VALUES ($1, $2, $3, $4)', [newFile.name, 'stuff', 7, false])
+    var phname = request.body.phname;
+    var des = request.body.dec;
+    db.none('INSERT INTO photo(photoname, url, dec, owner_id, shared) VALUES ($1, $2, $3, $4, $5)', [phname, newFile.name, des, 7, false])
         .then(function () {
             //response.send('{"add" : true}');
         }) .catch (function (err) {
@@ -190,6 +191,28 @@ app.post('/imgDec', logedon, function (request, response) {
         }).catch(function (err) {
         console.log(err);
     });
+});
+
+app.post('/logout', logedon, function (request, response) {
+    if (request.session.user == "g") {
+        response.json({
+            success: true,
+            user: 'g'
+        });
+        request.session.destroy();
+    } else if (request.session.user == "FB") {
+        response.json({
+            success: true,
+            user: 'fb'
+        });
+        request.session.destroy();
+    } else {
+        response.json({
+            success: true,
+            user: 'users'
+        });
+        request.session.destroy();
+    }
 });
 
 app.post('/img', logedon, function (request, response) {
@@ -242,7 +265,6 @@ app.listen(app.get('port'), function() {
 
 
 function logedon(request, response, next) {
-    console.log(request.session.user);
     if (!request.session.user) {
         response.writeHead(302, {Location: '/login'});
         response.end();

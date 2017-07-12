@@ -2,7 +2,8 @@
  * Created by jmp on 7/6/17.
  */
 
-function login() {
+function logan() {
+    console.log("login hello");
     var username = $("#username").val();
     var password = $("#password").val();
     var params = {
@@ -12,9 +13,9 @@ function login() {
 
     $.post("/gooduser", params, function(result) {
     if (result && result.success) {
-        //window.location = "/"
+        window.location = "/"
     } else {
-        $("#status").text("Error logging in.");
+        console.log("Error logging in.");
     }
     });
 };
@@ -68,12 +69,13 @@ function goodFBuser() {
     FB.api('/me?fields=id,name,email', function(response) {
         console.log(response.id + " " + response.name + " " + response.email);
         var params = {
-            fid: response.id
+            fbid: response.id
         };
         $.post("/goodFBuser", params, function(result) {
             if (result && result.success) {
-                //window.location = "/"
+                window.location = "/"
             } else {
+                console.log(result);
                 params = {
                     names: response.name,
                     email: response.email,
@@ -88,7 +90,7 @@ function goodFBuser() {
 function newFBuser(params) {
     $.post("/newFBuser", params, function(result) {
         if (result && result.success) {
-            //window.location = "/"
+            window.location = "/"
         } else {
             console.log("Error logging in.");
         }
@@ -124,17 +126,17 @@ function imgMenu(id) {
     $.post("/imgDec", params, function(result) {
         if (result && result.success) {
             var re = {
-                names: result.data[0].photoname,
-                dec: result.data[0].dec
+                names: result.data.photoname,
+                dec: result.data.dec
             };
             var img = 400;
             $('.pic').css("visibility", "visible");
             $('.pic').append("<div id='name'>" + re.names + "</div>");
-            $('.pic').append("<a href='#' class='close' onclick='close()'>X</a>");
+            $('.pic').append("<a href='#' class='close' onclick='cl()'>X</a>");
             $('.pic').append("<img class='imgMenu' id='" + img + "' onload='resize(" + img + ", 550, 550)' src='" + $("#" + id).attr('src') + "'>");
             $('.pic').append("<div id='dec'>" + re.dec + "</div>");
             $('.pic').append('<button id="edit" type="button">Edit</button>');
-            $('.pic').append('<button id="del" type="button">Delete</button>');
+            $('.pic').append('<button id="del" type="button" onclick="del(' + id + ')">Delete</button>');
         } else {
             $("#status").text("Error logging in.");
         }
@@ -164,13 +166,56 @@ function resize(id, maxWidth, maxHeight) {
         }
 };
 
-function close() {
-    console.log("hello world");
+function cl() {
     $('.pic').css("visibility", "hidden");
     $('.upload').css("visibility", "hidden");
+    $('.pic').empty();
 }
 
 function logout() {
+    $.post("/logout", function(result) {
+        if (result && result.success) {
+            if(result.user == "g") {
+                var auth2 = gapi.auth2.getAuthInstance();
+                auth2.signOut().then(function () {
+                    console.log('User signed out.');
+                    window.location = "/login";
+                });
+            } else if (result.user == "FB") {
+                FB.logout(function (response) {
+                    console.log(response);
+                    window.location = "/login";
+                })
+            } else {
+                window.location = "/login";
+            }
+        }
+    });
+}
+
+function readURL(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+            $('.blah').attr('src', e.target.result);
+        }
+
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+function del(id) {
+    var params = {
+        id: id
+    };
+    $.post("/imgDec", params, function(result) {
+        if (result && result.success) {
+
+        } else {
+            $("#status").text("Error logging in.");
+        }
+    });
 
 }
 

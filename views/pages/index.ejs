@@ -2,6 +2,9 @@
 <html>
 <head>
     <title>test page</title>
+    <meta name="google-signin-scope" content="profile email">
+    <meta name="google-signin-client_id" content="999279785788-p30fuj9scbca5aaoita0387c53tjkrlr.apps.googleusercontent.com">
+    <script src="https://apis.google.com/js/platform.js?onload=onLoad" async defer></script>
     <script
             src="https://code.jquery.com/jquery-3.2.1.min.js"
             integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
@@ -11,17 +14,48 @@
     <link rel="stylesheet" href="/stylesheets/main.css">
 </head>
 <body onload="getImg()">
+<script>
+    function onLoad() {
+        gapi.load('auth2', function() {
+            gapi.auth2.init();
+            console.log("hello");
+        });
+    }
+</script>
+<script>
+    window.fbAsyncInit = function() {
+        FB.init({
+            appId      : '1243279955781066',
+            xfbml      : true,
+            version    : 'v2.9'
+        });
+
+        FB.getLoginStatus(function(response) {
+            if (response.status === 'connected') {
+                goodFBuser();
+                console.log("facebook login");
+            }
+        });
+
+</script>
 <div id="main" >
     <img id="logo" src="/img/logo.gif">
     <div id="but">
-        <button id="upload" type="button">Upload</button>
-        <button id="logout" type="button">Logout</button>
+        <button id="upload" type="button" onclick="$('.upload').css('visibility', 'visible');">Upload</button>
+        <button id="logout" type="button" onclick="logout()">Logout</button>
     </div>
 </div>
 <div class="upload" id="menu">
-    <img id="newImg">
-    <button id="edit" type="button">Edit</button>
-    <button id="del" type="button">Delete</button>
+    <h1>Upload new photo</h1>
+    <form method="post" action="/upload" encType="multipart/form-data">
+        <a href='#' class='close' onclick='cl()'>X</a>
+        <input class="uploads" id="phName" type="text" name="phname"><br />
+        <input type='file' id="imgInp" name="file" onchange="readURL(this)" /><br />
+        <img class="blah" id="1000" src="#" onload="resize(1000, 300, 300)" alt="your image" /><br />
+        <input class="uploads" id="des" type="text" name="dec"><br />
+        <button class="uploadBut" type="submit">upload</button>
+        <button id="close" onclick="cl()">Close</button>
+    </form>
 </div>
 <div class="pic" id="menu">
 </div>
