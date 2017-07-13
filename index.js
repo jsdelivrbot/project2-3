@@ -1,7 +1,7 @@
 var express = require('express');
 var pgp = require('pg-promise')(/*options*/);
 // var db = pgp('postgres://postgres:password123@localhost:8081/project2');
-var db = pgp('postgres://process.env.DATABASE_URL');
+var db = pgp('postgres://DATABASE_URL');
 var bcrypt = require('bcrypt');
 const saltRounds = 10;
 var bodyParser = require('body-parser');
