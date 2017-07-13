@@ -1,7 +1,7 @@
 var express = require('express');
 var pgp = require('pg-promise')(/*options*/);
 // var db = pgp('postgres://postgres:password123@localhost:8081/project2');
-var db = pgp('postgres://esndifdttprtov:17e5dba5acc07e1aec1e002cddff1c82d99f86323ce9741b3d2fae130940c010@ec2-184-73-167-43.compute-1.amazonaws.com:5432/d1plvo0nju7jld');
+var db = pgp('postgres://esndifdttprtov:17e5dba5acc07e1aec1e002cddff1c82d99f86323ce9741b3d2fae130940c010@ec2-184-73-167-43.compute-1.amazonaws.com:5432/d1plvo0nju7jld?ssl=true');
 var bcrypt = require('bcrypt');
 const saltRounds = 10;
 var bodyParser = require('body-parser');
@@ -167,18 +167,72 @@ app.post('/upload', function (request, response) {
     var newFile = request.files.file;
     var phname = request.body.phname;
     var des = request.body.dec;
-    db.none('INSERT INTO photo(photoname, url, dec, owner_id, shared) VALUES ($1, $2, $3, $4, $5)', [phname, newFile.name, des, 7, false])
-        .then(function () {
-            //response.send('{"add" : true}');
-        }) .catch (function (err) {
-            //response.send('{"add" : false}');
-        console.log(err);
-    });
-    newFile.mv('./upload/' + newFile.name, function (err) {
-        if (err)
-            return response.status(500).send('{"uploaded" : false}');
-        response.send('{"uploaded" : true}');
-    });
+
+    var id = -1;
+    if (request.session.user == "g") {
+        db.one('SELECT id FROM users WHERE gid = $1', [request.session.g])
+            .then(function (data) {
+                id = data.id;
+                db.none('INSERT INTO photo(photoname, url, dec, owner_id, shared) VALUES ($1, $2, $3, $4, $5)', [phname, newFile.name, des, id, false])
+                    .then(function () {
+                        //response.send('{"add" : true}');
+                    }) .catch (function (err) {
+                    //response.send('{"add" : false}');
+                    console.log(err);
+                });
+                newFile.mv('./upload/' + newFile.name, function (err) {
+                    if (err)
+                        return response.status(500).send('{"uploaded" : false}');
+                    else
+                        response.writeHead(302, {Location: '/'});
+                    response.end();
+                });
+            }).catch (function (err) {
+            console.log(err);
+        });
+    } else if (request.session.user ==  "FB") {
+        db.one('SELECT id FROM users WHERE fid = $1', [request.session.fb])
+            .then(function (data) {
+                id = data.id;
+                db.none('INSERT INTO photo(photoname, url, dec, owner_id, shared) VALUES ($1, $2, $3, $4, $5)', [phname, newFile.name, des, id, false])
+                    .then(function () {
+                        //response.send('{"add" : true}');
+                    }) .catch (function (err) {
+                    //response.send('{"add" : false}');
+                    console.log(err);
+                });
+                newFile.mv('./upload/' + newFile.name, function (err) {
+                    if (err)
+                        return response.status(500).send('{"uploaded" : false}');
+                    else
+                        response.writeHead(302, {Location: '/'});
+                    response.end();
+                });
+            }).catch (function (err) {
+            console.log(err);
+        });
+    } else {
+        db.one('SELECT id FROM users WHERE username = $1', [request.session.user])
+            .then(function (data) {
+                id = data.id;
+                db.none('INSERT INTO photo(photoname, url, dec, owner_id, shared) VALUES ($1, $2, $3, $4, $5)', [phname, newFile.name, des, id, false])
+                    .then(function () {
+                        //response.send('{"add" : true}');
+                    }) .catch (function (err) {
+                    //response.send('{"add" : false}');
+                    console.log(err);
+                });
+                newFile.mv('./upload/' + newFile.name, function (err) {
+                    if (err)
+                        return response.status(500).send('{"uploaded" : false}');
+                    else
+                        response.writeHead(302, {Location: '/'});
+                    response.end();
+                });
+            }).catch (function (err) {
+            console.log(err);
+        });
+    }
 });
 
 app.post('/imgDec', logedon, function (request, response) {
@@ -238,6 +292,15 @@ app.post('/img', logedon, function (request, response) {
         db.one('SELECT id FROM users WHERE fid = $1', [request.session.fb])
             .then(function (data) {
                 id = data.id;
+                db.any('SELECT * FROM photo WHERE owner_id = $1', [id])
+                    .then(function (data) {
+                        response.json({
+                            success: true,
+                            data
+                        });
+                    }).catch(function (err) {
+                    console.log(err);
+                })
             }).catch (function (err) {
             console.log(err);
         });
@@ -245,6 +308,15 @@ app.post('/img', logedon, function (request, response) {
         db.one('SELECT id FROM users WHERE username = $1', [request.session.user])
             .then(function (data) {
                 id = data.id;
+                db.any('SELECT * FROM photo WHERE owner_id = $1', [id])
+                    .then(function (data) {
+                        response.json({
+                            success: true,
+                            data
+                        });
+                    }).catch(function (err) {
+                    console.log(err);
+                })
             }).catch (function (err) {
             console.log(err);
         });

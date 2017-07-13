@@ -108,7 +108,6 @@ function logedin() {
 function getImg() {
     $.post("/img", function(result) {
         if (result) {
-            console.log(result);
             $.each(result.data, function (index, value) {
                 $('#img').append("<a onclick='imgMenu(" + value.id + ")'><img class='img' id='" + value.id + "' onload='resize(" + value.id + ", 400, 400)' src='/upload/" + value.url + "'></a>");
             });
