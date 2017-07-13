@@ -266,6 +266,7 @@ app.listen(app.get('port'), function() {
 
 
 function logedon(request, response, next) {
+    console.log(request.session);
     if (!request.session.user) {
         response.writeHead(302, {Location: '/login'});
         response.end();
