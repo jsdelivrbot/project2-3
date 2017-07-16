@@ -118,10 +118,38 @@ function getImg() {
     });
 }
 
+function sendEdits(id) {
+    var phname = $('.phname').val();
+    var phdes = $('.phdec').val();
+    var params = {
+        id: id,
+        phName: phname,
+        des: phdes
+    };
+     console.log(params);
+    $.post("/edit", params, function(result) {
+        if (result && result.success) {
+            cl();
+        }
+    });
+}
+
+function ed(id) {
+    var phname = $('#name').text();
+    var phdec = $('#dec').text();
+    $('.rmedit').empty();
+    $('.imgMenu').after('Photo Name:<input type="text" id="edits" class="phname" value="' + phname + '">');
+    $('.phname').after('<br>Photo Descrietion:<input type="text" id="edits" class="phdec" value="' + phdec + '">');
+    $('#edit').html("Change");
+    $('#edit').attr('onclick', 'sendEdits(' + id + ')');
+    $('#del').html("Cancel");
+    $('#del').attr('onclick', 'cl()');
+}
+
 function imgMenu(id) {
     var params = {
         id: id
-    }
+    };
     $.post("/imgDec", params, function(result) {
         if (result && result.success) {
             var re = {
@@ -130,16 +158,28 @@ function imgMenu(id) {
             };
             var img = 400;
             $('.pic').css("visibility", "visible");
-            $('.pic').append("<div id='name'>" + re.names + "</div>");
+            $('.pic').append("<div id='name' class='rmedit'>" + re.names + "</div>");
             $('.pic').append("<a href='#' class='close' onclick='cl()'>X</a>");
             $('.pic').append("<img class='imgMenu' id='" + img + "' onload='resize(" + img + ", 550, 550)' src='" + $("#" + id).attr('src') + "'>");
-            $('.pic').append("<div id='dec'>" + re.dec + "</div>");
-            $('.pic').append('<button id="edit" type="button">Edit</button>');
-            $('.pic').append('<button id="del" type="button" onclick="del(' + id + ')">Delete</button>');
+            $('.pic').append("<div id='dec' class='rmedit'>" + re.dec + "</div>");
+            $('.pic').append('<button id="edit" onclick="ed(' + id +')" class="rmedit" type="button">Edit</button>');
+            $('.pic').append('<button id="del" class="rmedit" type="button" onclick="dele(' + id + ')">Delete</button>');
         } else {
             $("#status").text("Error logging in.");
         }
     });
+}
+
+function dele(id) {
+    var params = {
+        id: id
+    }
+    $.post("/del", params, function(result) {
+        if (result && result.success) {
+            location.reload();
+        }
+    })
+
 }
 
 function resize(id, maxWidth, maxHeight) {
@@ -204,17 +244,7 @@ function readURL(input) {
     }
 }
 
-function del(id) {
-    var params = {
-        id: id
-    };
-    $.post("/imgDec", params, function(result) {
-        if (result && result.success) {
-
-        } else {
-            $("#status").text("Error logging in.");
-        }
-    });
-
+function signu() {
+    $('.login').empty();
+    $('.newuser').css("visibility", "visible");
 }
-

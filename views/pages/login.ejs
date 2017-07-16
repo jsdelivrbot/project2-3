@@ -45,7 +45,9 @@
     }(document, 'script', 'facebook-jssdk'));</script>
 
 <div id="login_win">
-<h1 style="text-align: center">Log in to continue</h1>
+    <div class="login">
+    <img id="logo-login" src="/img/logo.gif"><br>
+<h2 style="text-align: center; margin: 0; padding: 0">Log in to continue</h2>
     <form>
         <input type="text" style="text-align: center" class="input" id="username" placeholder="Username"><br />
         <input type="password" style="text-align: center" id="password" class="input" placeholder="Password"><br />
@@ -56,7 +58,27 @@
     <br /><br />
         <div id="my-signin2" style="padding-left: 80px;"></div>
     <script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
+
+    <div id="signup-wraper" style="text-align: center">
+        <hr id="sign">
+        Not on albums yet? <span class="signup" onclick="signu()">Sign Up</span>
+    </div>
+    </div>
+    <div class="newuser" style="visibility: hidden">
+        <img id='logo-singup' src='/img/logo.gif'><br>
+        <h2 style='text-align: center'>Sign up to use albums</h2>
+        <form method='post' action='/newuser'>
+            <input class='input' placeholder='Name' name='names' type='text'><br />
+            <input class='input' placeholder='Username' name='username' type='text'><br />
+            <input class="input" placeholder="Email" name="email" type="email"><br />
+            <input class="input" placeholder="password" name="password" type="password"><br />
+            <button id="signup" type="submit">Sign Up</button>
+            <button id="can" type="button" onclick="location.reload()">Cancel</button>
+        </form>
+    </div>
 </div>
+
+
 
 </body>
 </html>

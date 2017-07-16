@@ -25,18 +25,18 @@
 <script>
     window.fbAsyncInit = function() {
         FB.init({
-            appId      : '1243279955781066',
-            xfbml      : true,
-            version    : 'v2.9'
+            appId: '1243279955781066',
+            xfbml: true,
+            version: 'v2.9'
         });
 
-        FB.getLoginStatus(function(response) {
+        FB.getLoginStatus(function (response) {
             if (response.status === 'connected') {
                 goodFBuser();
                 console.log("facebook login");
             }
         });
-
+    }
 </script>
 <div id="main" >
     <img id="logo" src="/img/logo.gif">

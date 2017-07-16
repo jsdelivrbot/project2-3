@@ -69,7 +69,7 @@ body {
     padding-top:30px;
 }
 
-#logout, #upload, #edit, #del, .uploadBut, #close {
+#logout, #upload, #edit, #del, .uploadBut, #close, #signup, #can {
     border: none;
     text-align: center;
     text-decoration: none;
@@ -80,7 +80,7 @@ body {
     height: 40px;
 }
 
-#upload, .uploadBut {
+#upload, .uploadBut, #signup {
     background-color: #bd081c;
     color: white;
     margin-right: 5px;
@@ -133,7 +133,7 @@ body {
     text-align: center;
 }
 
-.uploads {
+.uploads, #edits {
     width: 240px;
     height: 20px;
     border-radius: 4px;
@@ -146,4 +146,28 @@ body {
 
 .blah {
     margin: 10px;
+}
+
+#sign {
+    width: 100px;
+    margin: 20px 150px;
+    text-align: center;
+}
+
+.signup {
+    color: blue;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+#logo-login, #logo-singup {
+    text-align: center;
+    height: 100px;
+    width: 100px;
+    margin-left: 150px;
+    padding: 0;
+}
+
+#signup {
+    margin-left: 50px;
 }

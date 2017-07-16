@@ -32,7 +32,7 @@ app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 
 app.get('/', logedon, function(request, response) {
-    console.log(request.session);
+
   response.render('pages/index');
 });
 
@@ -76,11 +76,11 @@ app.post('/newuser', function (request, response) {
         bcrypt.hash(password, saltRounds, function (err, hash) {
             db.none('INSERT INTO users(name, username, email, password) VALUES($1, $2, $3, $4)', [name, username, email, hash])
                 .then(function () {
-                    response.send({success: true});
                     request.session.user = username;
                     request.session.save();
+                    response.writeHead(302, {Location: '/'});
                 }).catch(function (err) {
-                response.send({success: false});
+                response.writeHead(302, {Location: '/login'});
                 console.log(err);
             });
         });
@@ -154,6 +154,31 @@ app.post('/newFBuser', function (request, response) {
             request.session.user = 'FB';
             request.session.fb = fid;
             request.session.save();
+        }) .catch (function (err) {
+        response.send({success : false});
+        console.log(err);
+    });
+});
+
+app.post('/del', function (request, response) {
+    var id = request.body.id;
+    db.none('DELETE FROM photo WHERE id = $1', [id])
+        .then(function () {
+            response.send({success : true});
+        }) .catch (function (err) {
+        response.send({success : false});
+        console.log(err);
+    });
+});
+
+app.post('/edit', logedon, function (request, response) {
+   id = request.body.id;
+   phname = request.body.phName;
+   des = request.body.des;
+   console.log(request.body);
+    db.none('UPDATE photo SET photoname = $1, dec = $2 WHERE id = $3', [phname, des, id])
+        .then(function () {
+            response.send({success : true});
         }) .catch (function (err) {
         response.send({success : false});
         console.log(err);
@@ -338,7 +363,6 @@ app.listen(app.get('port'), function() {
 
 
 function logedon(request, response, next) {
-    console.log(request.session);
     if (!request.session.user) {
         response.writeHead(302, {Location: '/login'});
         response.end();
