@@ -308,7 +308,9 @@ app.post('/img', logedon, function (request, response) {
                             data
                         });
                     }).catch(function (err) {
-                    console.log(err);
+                    response.json({
+                        success: false
+                    });
                 })
             }).catch (function (err) {
             console.log(err);

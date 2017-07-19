@@ -107,12 +107,12 @@ function logedin() {
 
 function getImg() {
     $.post("/img", function(result) {
-        if (result) {
+        if (result && result.data.length > 0) {
             $.each(result.data, function (index, value) {
                 $('#img').append("<a onclick='imgMenu(" + value.id + ")'><img class='img' id='" + value.id + "' onload='resize(" + value.id + ", 400, 400)' src='/upload/" + value.url + "'></a>");
             });
         } else {
-            $("#status").text("Error logging in.");
+            $('#img').append("<a href='#' onclick='uploadvis()'><img class='img' src='/img/addphoto.png'></a>");
         }
         resize();
     });
@@ -248,3 +248,37 @@ function signu() {
     $('.login').empty();
     $('.newuser').css("visibility", "visible");
 }
+
+function uploadvis() {
+    $('.upload').css('visibility', 'visible');
+}
+
+$("#username").keyup(function(event){
+    if(event.keyCode == 13){
+        $("#login").click();
+    }
+});
+
+$("#password").keyup(function(event){
+    if(event.keyCode == 13){
+        $("#login").click();
+    }
+});
+
+$("#userSin").keyup(function(event){
+    if(event.keyCode == 13){
+        $("#signup").click();
+    }
+});
+
+$("#phname").keyup(function(event){
+    if(event.keyCode == 13){
+        $(".uploadBut").click();
+    }
+});
+
+$("#des").keyup(function(event){
+    if(event.keyCode == 13){
+        $(".uploadBut").click();
+    }
+});

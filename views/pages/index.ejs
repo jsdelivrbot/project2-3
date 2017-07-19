@@ -49,10 +49,10 @@
     <h1>Upload new photo</h1>
     <form method="post" action="/upload" encType="multipart/form-data">
         <a href='#' class='close' onclick='cl()'>X</a>
-        <input class="uploads" id="phName" type="text" name="phname"><br />
         <input type='file' id="imgInp" name="file" onchange="readURL(this)" /><br />
         <img class="blah" id="1000" src="#" onload="resize(1000, 300, 300)" alt="your image" /><br />
-        <input class="uploads" id="des" type="text" name="dec"><br />
+        <input class="uploads" id="phName" type="text" name="phname" placeholder="Photo Name"><br />
+        <input class="uploads" id="des" type="text" name="dec" placeholder="Photo Description"><br />
         <button class="uploadBut" type="submit">upload</button>
         <button id="close" onclick="cl()">Close</button>
     </form>
@@ -61,5 +61,10 @@
 </div>
 <div id="img">
 </div>
+<script>
+//    $('#img').click(function () {
+//        cl();
+//    })
+</script>
 </body>
 </html>
